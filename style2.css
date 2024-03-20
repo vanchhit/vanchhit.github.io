@@ -1,0 +1,136 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* Each column takes up an equal portion of the width */
+    grid-template-rows: repeat(4, 150px); /* Keep the row size fixed */
+    width: 100%;
+    gap: 10px; /* Add gap between grid items */
+ }
+
+ .svg-image {
+    max-height: 100%;
+    border-radius: 10px;
+    align-self: center;
+}
+
+ body{
+    background-image: url("test-background-3.png");
+    /*background: linear-gradient(90deg, rgba(12,27,56,1) 0%, rgba(67,11,130,1) 100%);*/
+    font-family: 'Epilogue', sans-serif;
+    color: white;
+ }
+
+ .header{
+    margin-left: 10px;
+    text-align: center;
+ }
+ 
+ .item {
+     display: flex;
+     border-radius: 15px;
+     flex: 1;
+     justify-content: center;
+     align-items: center;
+ }
+ 
+ .item-1 {
+     grid-row: 1 / span 2;
+     grid-column: 1 / span 6;
+     overflow: hidden;
+     background-color: rgba(113, 153, 197, 0.25);
+     border: 1px solid rgba(113, 153, 197, .30);
+ }
+ 
+ .item-2 {
+     grid-row: 3;
+     grid-column: 1 / span 3;
+     padding: 15px;
+     background-color: rgba(113, 153, 197, 0.25);
+     border: 1px solid rgba(113, 153, 197, .30);
+     box-shadow: 0 0 10px 1px rgba(0, 0, 0, .45);
+     backdrop-filter: blur(15px);
+ }
+ 
+ .item-3 {
+     grid-row: 3;
+     grid-column: 4 / span 3;
+     padding: 15px;
+     background-color: rgba(113, 153, 197, 0.25);
+     border: 1px solid rgba(113, 153, 197, .30);
+     box-shadow: 0 0 10px 1px rgba(0, 0, 0, .45);
+     backdrop-filter: blur(15px);
+ }
+ 
+ .item-4 {
+     grid-row: 4;
+     grid-column: 1 / span 6; /* Adjusted to span all columns */
+     background-color: rgba(113, 153, 197, 0.25);
+     border: 1px solid rgba(113, 153, 197, .30);
+     backdrop-filter: blur(15px);
+ }
+
+ .airtable-embed{
+    margin-top: -55px;
+ }
+
+
+
+
+ .item-5 h2 {
+    margin-bottom: 0px; /* Reduce the margin-bottom to decrease space */
+}
+
+ @media (max-width: 600px) {
+    .row {
+        flex-direction: column;
+    }
+  }
+
+  .footer {
+    background-color: #f1f1f1;
+    padding: 10px;
+    text-align: center;
+    color: #000;
+  }
+  button {
+    --border: 3px;    /* the border width */
+    --slant: 0.2em;   /* control the slanted corners */
+    --color: #005c66; /* the color */
+    
+    font-size: 30px;
+    padding: 0.4em 1.2em;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--color);
+    background: 
+       linear-gradient(to bottom left,var(--color)  50%,#0000 50.1%) top right,
+       linear-gradient(to top   right,var(--color)  50%,#0000 50.1%) bottom left;
+    background-size: calc(var(--slant) + 1.3*var(--border)) calc(var(--slant) + 1.3*var(--border));
+    background-repeat: no-repeat;
+    box-shadow:
+      0 0 0 200px inset var(--s,#0000),
+      0 0 0 var(--border) inset var(--color);
+    clip-path: 
+        polygon(0 0, calc(100% - var(--slant)) 0, 100% var(--slant),
+                100% 100%, var(--slant) 100%,0 calc(100% - var(--slant))
+               );
+    transition: color var(--t,0.3s), background-size 0.3s;
+  }
+  button:focus-visible {
+    outline-offset: calc(-1*var(--border));
+    outline: var(--border) solid #000c;
+    clip-path: none;
+    background-size: 0 0;
+  }
+  button:hover,
+  button:active{
+    background-size: 100% 100%;
+    color: rgb(0, 0, 0);
+    --t: 0.2s 0.1s;
+  }
+  button:active {
+    --s: #0005;
+    transition: none;
+  }
+  
+ 
