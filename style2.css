@@ -13,8 +13,8 @@
 }
 
  body{
-    background-image: url("test-background-3.png");
-    /*background: linear-gradient(90deg, rgba(12,27,56,1) 0%, rgba(67,11,130,1) 100%);*/
+
+    background: linear-gradient(90deg, rgba(12,27,56,1) 0%, rgba(67,11,130,1) 100%);
     font-family: 'Epilogue', sans-serif;
     color: white;
  }
