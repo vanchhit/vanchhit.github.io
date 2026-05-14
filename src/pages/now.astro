@@ -1,0 +1,55 @@
+---
+import Page from '../layouts/Page.astro';
+import { currently } from '../data/currently';
+
+const updated = 'May 2025';
+---
+
+<Page title="Now" page="about">
+  <div class="pt-12 max-w-2xl">
+    <div class="flex items-center gap-3 mb-8">
+      <h1 class="font-display font-extrabold text-5xl text-primary">Now</h1>
+      <a
+        href="https://nownownow.com/about"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-xs text-muted hover:text-primary transition-colors mt-2"
+        title="What is a /now page?"
+      >
+        What's this?
+      </a>
+    </div>
+
+    <p class="text-muted text-sm mb-12">Last updated: {updated} · From Berlin, Germany</p>
+
+    <div class="flex flex-col gap-10">
+      <div class="fade-up">
+        <h2 class="font-display font-bold text-xl text-primary mb-3">📖 Reading</h2>
+        <p class="text-muted">{currently.reading}</p>
+      </div>
+
+      <div class="fade-up">
+        <h2 class="font-display font-bold text-xl text-primary mb-3">💻 Working on</h2>
+        <p class="text-muted">{currently.working}</p>
+      </div>
+
+      <div class="fade-up">
+        <h2 class="font-display font-bold text-xl text-primary mb-3">🎵 Listening to</h2>
+        <p class="text-muted">{currently.listening}</p>
+      </div>
+
+      <div class="fade-up">
+        <h2 class="font-display font-bold text-xl text-primary mb-3">📍 Based in</h2>
+        <p class="text-muted">{currently.location}</p>
+      </div>
+    </div>
+
+    <p class="text-xs text-muted mt-16 pt-8 border-t border-border">
+      This page is inspired by{' '}
+      <a href="https://nownownow.com" class="underline hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
+        nownownow.com
+      </a>.
+      To update it, edit <code class="font-mono text-[11px] bg-surface px-1.5 py-0.5 rounded">src/data/currently.ts</code>.
+    </p>
+  </div>
+</Page>

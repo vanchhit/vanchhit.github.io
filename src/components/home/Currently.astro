@@ -1,0 +1,23 @@
+---
+import { currently } from '../../data/currently';
+
+const items = [
+  { label: 'Reading',   value: currently.reading,   icon: '📖' },
+  { label: 'Working on', value: currently.working,  icon: '💻' },
+  { label: 'Listening', value: currently.listening,  icon: '🎵' },
+  { label: 'Based in',  value: currently.location,   icon: '📍' },
+];
+---
+
+<section class="py-16 border-b border-border">
+  <p class="text-xs font-semibold uppercase tracking-widest text-muted mb-8">Currently</p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    {items.map(({ label, value, icon }) => (
+      <div class="fade-up">
+        <p class="text-lg mb-1" aria-hidden="true">{icon}</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-1">{label}</p>
+        <p class="text-sm text-primary leading-snug">{value}</p>
+      </div>
+    ))}
+  </div>
+</section>

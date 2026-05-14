@@ -1,0 +1,126 @@
+---
+import Page from '../../layouts/Page.astro';
+import BlogCard from '../../components/blog/BlogCard.astro';
+import { getCollection } from 'astro:content';
+import { BLOG_CATEGORIES } from '../../content/config';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const sorted = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const featured = sorted.find((p) => p.data.featured);
+
+const categoryLabels: Record<string, string> = {
+  aviation: 'Aviation',
+  trains: 'Trains',
+  'ai-safety': 'AI Safety',
+  climate: 'Climate',
+  tech: 'Tech',
+  personal: 'Personal',
+};
+---
+
+<Page title="Blog" page="blog" fullWidth>
+  <!-- Page header -->
+  <div class="px-6 pt-28 pb-12 border-b border-border">
+    <div class="max-w-site mx-auto">
+      <h1 class="font-display font-extrabold text-5xl md:text-6xl text-primary mb-4">Writing</h1>
+      <p class="text-muted text-lg max-w-xl">
+        Notes on aviation, trains, AI safety, climate change, and whatever else I'm thinking about.
+      </p>
+    </div>
+  </div>
+
+  <div class="max-w-site mx-auto px-6">
+    <!-- Category filter -->
+    <div class="flex flex-wrap gap-2 py-8 border-b border-border">
+      <button
+        data-filter="all"
+        class="filter-btn active px-4 py-1.5 rounded-full border border-accent bg-accent text-bg text-sm font-semibold transition-colors"
+      >
+        All
+      </button>
+      {BLOG_CATEGORIES.map((cat) => (
+        <button
+          data-filter={cat}
+          class="filter-btn px-4 py-1.5 rounded-full border border-border text-muted text-sm font-semibold hover:border-accent hover:text-accent transition-colors"
+        >
+          {categoryLabels[cat]}
+        </button>
+      ))}
+    </div>
+
+    <!-- Featured post -->
+    {featured && (
+      <div class="py-10 border-b border-border" id="featured-post" data-categories={featured.data.categories.join(',')}>
+        <p class="text-xs font-semibold uppercase tracking-widest text-muted mb-4">Featured</p>
+        <BlogCard post={featured} featured />
+      </div>
+    )}
+
+    <!-- All posts grid -->
+    <div id="posts-grid" class="py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {sorted
+        .filter((p) => !p.data.featured)
+        .map((post) => (
+          <div class="fade-up post-wrapper" data-categories={post.data.categories.join(',')}>
+            <BlogCard post={post} />
+          </div>
+        ))
+      }
+    </div>
+
+    <p id="no-results" class="hidden py-16 text-center text-muted">
+      No posts in this category yet.
+    </p>
+  </div>
+</Page>
+
+<script>
+  const buttons   = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const wrappers  = document.querySelectorAll<HTMLElement>('.post-wrapper');
+  const featured  = document.getElementById('featured-post') as HTMLElement | null;
+  const noResults = document.getElementById('no-results')!;
+
+  function setFilter(filter: string) {
+    // Update button styles
+    buttons.forEach((btn) => {
+      const active = btn.dataset.filter === filter;
+      btn.classList.toggle('bg-accent', active);
+      btn.classList.toggle('text-bg', active);
+      btn.classList.toggle('border-accent', active);
+      btn.classList.toggle('text-muted', !active);
+      btn.classList.toggle('border-border', !active);
+    });
+
+    // Filter post cards
+    let visible = 0;
+    wrappers.forEach((el) => {
+      const cats = (el.dataset.categories ?? '').split(',');
+      const show = filter === 'all' || cats.includes(filter);
+      el.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    // Featured post
+    if (featured) {
+      const cats = (featured.dataset.categories ?? '').split(',');
+      featured.style.display = (filter === 'all' || cats.includes(filter)) ? '' : 'none';
+    }
+
+    noResults.classList.toggle('hidden', visible > 0);
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => setFilter(btn.dataset.filter ?? 'all'));
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    },
+    { threshold: 0.05 }
+  );
+  document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+</script>

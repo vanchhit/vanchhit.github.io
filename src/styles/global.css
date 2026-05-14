@@ -1,0 +1,152 @@
+/* ─── Google Fonts (must precede @tailwind directives) ──────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Design tokens ─────────────────────────────────────────── */
+:root {
+  --bg: #ffffff;
+  --bg-surface: #f5f5f7;
+  --text: #1d1d1f;
+  --text-muted: #6e6e73;
+  --border: #d2d2d7;
+  --accent: #1d1d1f;
+}
+
+html.dark {
+  --bg: #000000;
+  --bg-surface: #1c1c1e;
+  --text: #f5f5f7;
+  --text-muted: #98989d;
+  --border: #3a3a3c;
+  --accent: #f5f5f7;
+}
+
+/* ─── Per-page accent colors ────────────────────────────────── */
+body[data-page="about"]      { --accent: #c45c26; }
+html.dark body[data-page="about"]    { --accent: #e87040; }
+
+body[data-page="projects"]   { --accent: #0066cc; }
+html.dark body[data-page="projects"] { --accent: #2997ff; }
+
+body[data-page="blog"]       { --accent: #333333; }
+html.dark body[data-page="blog"]     { --accent: #ebebeb; }
+
+body[data-page="aviation"]   { --accent: #1a6fc4; }
+html.dark body[data-page="aviation"] { --accent: #4db8ff; }
+
+body[data-page="trains"]     { --accent: #7b5e3a; }
+html.dark body[data-page="trains"]   { --accent: #c4956a; }
+
+body[data-page="ai-safety"]  { --accent: #6b21a8; }
+html.dark body[data-page="ai-safety"]{ --accent: #c084fc; }
+
+body[data-page="climate"]    { --accent: #166534; }
+html.dark body[data-page="climate"]  { --accent: #4ade80; }
+
+body[data-page="travel"]     { --accent: #0e5c8a; }
+html.dark body[data-page="travel"]   { --accent: #38bdf8; }
+
+body[data-page="interests"]  { --accent: #7c3aed; }
+html.dark body[data-page="interests"]{ --accent: #a78bfa; }
+
+body[data-page="games"]      { --accent: #9333ea; }
+html.dark body[data-page="games"]    { --accent: #c084fc; }
+
+/* ─── Base ──────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Scroll-reveal animation ───────────────────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ─── Typography utilities ──────────────────────────────────── */
+.font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+.font-mono    { font-family: 'JetBrains Mono', monospace; }
+
+/* ─── Blog prose styles ─────────────────────────────────────── */
+.prose {
+  color: var(--text);
+  max-width: 68ch;
+}
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+.prose h1 { font-size: 2.25rem; }
+.prose h2 { font-size: 1.75rem; }
+.prose h3 { font-size: 1.375rem; }
+.prose p  { line-height: 1.75; margin-bottom: 1.25em; }
+.prose a  { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.prose a:hover { opacity: 0.75; }
+.prose code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875em;
+  background: var(--bg-surface);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+.prose pre {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  overflow-x: auto;
+  margin: 1.5em 0;
+}
+.prose pre code { background: none; padding: 0; }
+.prose blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1.25rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 1.5em 0;
+}
+.prose ul, .prose ol { padding-left: 1.5rem; margin-bottom: 1.25em; }
+.prose li { margin-bottom: 0.375em; line-height: 1.7; }
+.prose hr { border-color: var(--border); margin: 2.5em 0; }
+.prose img { border-radius: 8px; max-width: 100%; }
+
+/* ─── Nav scroll behaviour ──────────────────────────────────── */
+#main-nav.scrolled {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+html.dark #main-nav.scrolled {
+  background: rgba(0, 0, 0, 0.8);
+}

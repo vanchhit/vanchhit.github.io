@@ -1,0 +1,102 @@
+---
+import Page from '../layouts/Page.astro';
+import { interests } from '../data/interests';
+
+const books = [
+  { title: 'The Ministry for the Future', author: 'Kim Stanley Robinson', status: 'reading' },
+  { title: 'The Alignment Problem', author: 'Brian Christian', status: 'read' },
+  { title: 'The Power Broker', author: 'Robert Caro', status: 'read' },
+  { title: 'Superforecasting', author: 'Philip Tetlock', status: 'read' },
+  { title: 'Sustainable Energy Without the Hot Air', author: 'David MacKay', status: 'read' },
+  { title: 'The Precipice', author: 'Toby Ord', status: 'read' },
+  { title: 'What is ChatGPT Doing…', author: 'Stephen Wolfram', status: 'read' },
+  { title: 'Human Compatible', author: 'Stuart Russell', status: 'read' },
+];
+---
+
+<Page title="Interests" page="interests">
+  <div class="pt-12">
+    <h1 class="font-display font-extrabold text-5xl md:text-6xl text-primary mb-4">Interests</h1>
+    <p class="text-muted text-lg mb-16 max-w-xl">
+      A collection of things I spend my time thinking about and doing.
+    </p>
+
+    <!-- Interest sections -->
+    <div class="flex flex-col gap-16 mb-20">
+      {interests.map(({ id, name, emoji, description, links }) => (
+        <section class="fade-up" id={id}>
+          <div class="flex items-start gap-4 mb-4">
+            <span class="text-3xl">{emoji}</span>
+            <div>
+              <h2 class="font-display font-bold text-2xl text-primary">{name}</h2>
+            </div>
+          </div>
+          <p class="text-muted leading-relaxed max-w-2xl mb-4">{description}</p>
+          {links && links.length > 0 && (
+            <div class="flex flex-wrap gap-3">
+              {links.map(({ label, url }) => (
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-sm text-accent border border-accent/30 hover:border-accent px-3 py-1 rounded-full transition-colors"
+                >
+                  {label} ↗
+                </a>
+              ))}
+            </div>
+          )}
+        </section>
+      ))}
+    </div>
+
+    <!-- Bookshelf -->
+    <section class="mb-20">
+      <h2 class="font-display font-bold text-2xl text-primary mb-8">Bookshelf</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {books.map(({ title, author, status }) => (
+          <div class="flex items-start gap-3 p-4 rounded-xl border border-border bg-surface fade-up">
+            <span class="text-lg mt-0.5">{status === 'reading' ? '📖' : '✅'}</span>
+            <div>
+              <p class="font-semibold text-sm text-primary">{title}</p>
+              <p class="text-xs text-muted">{author}</p>
+              {status === 'reading' && (
+                <span class="text-[10px] font-bold uppercase tracking-widest text-accent mt-1 inline-block">
+                  Currently reading
+                </span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Music / Film / Podcasts -->
+    <section>
+      <h2 class="font-display font-bold text-2xl text-primary mb-8">Also into</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <div class="p-5 rounded-xl border border-border bg-surface">
+          <p class="text-2xl mb-3">🎵</p>
+          <p class="font-display font-bold text-primary mb-2">Music</p>
+          <p class="text-sm text-muted leading-relaxed">
+            Portuguese fado, Indian classical, ambient/drone, and whatever's on 96.3 RFM.
+          </p>
+        </div>
+        <div class="p-5 rounded-xl border border-border bg-surface">
+          <p class="text-2xl mb-3">🎬</p>
+          <p class="font-display font-bold text-primary mb-2">Film</p>
+          <p class="text-sm text-muted leading-relaxed">
+            Science fiction that takes ideas seriously. Arrival, Interstellar, Blade Runner 2049.
+          </p>
+        </div>
+        <div class="p-5 rounded-xl border border-border bg-surface">
+          <p class="text-2xl mb-3">🎙️</p>
+          <p class="font-display font-bold text-primary mb-2">Podcasts</p>
+          <p class="text-sm text-muted leading-relaxed">
+            80,000 Hours, The Alignment Forum, Lex Fridman (selectively), ACAST train podcasts.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</Page>

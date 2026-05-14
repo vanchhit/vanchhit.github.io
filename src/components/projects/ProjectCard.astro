@@ -1,0 +1,65 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, description, tags, github, live, status, date } = project.data;
+---
+
+<article
+  class="group relative bg-surface rounded-2xl p-6 border border-border hover:border-accent transition-all duration-300 hover:shadow-lg"
+  data-tags={tags.join(',')}
+>
+  <div class="flex items-start justify-between mb-4">
+    <div class="flex flex-wrap gap-1.5">
+      {tags.map((tag) => (
+        <span class="text-[10px] font-bold uppercase tracking-widest text-accent px-2 py-0.5 rounded-full bg-accent/10">
+          {tag}
+        </span>
+      ))}
+    </div>
+    {status === 'active' && (
+      <span class="flex items-center gap-1.5 text-[10px] font-semibold text-green-500 uppercase tracking-widest">
+        <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse inline-block"></span>
+        Active
+      </span>
+    )}
+  </div>
+
+  <h2 class="font-display font-bold text-primary text-xl mb-2 leading-snug">
+    {title}
+  </h2>
+
+  <p class="text-sm text-muted leading-relaxed mb-5">{description}</p>
+
+  <div class="flex items-center gap-4 text-xs text-muted border-t border-border pt-4 mt-auto">
+    <span>{date}</span>
+    <div class="flex items-center gap-3 ml-auto">
+      {github && (
+        <a
+          href={github}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-primary transition-colors font-medium"
+          aria-label={`${title} GitHub`}
+        >
+          GitHub ↗
+        </a>
+      )}
+      {live && (
+        <a
+          href={live}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-primary transition-colors font-medium"
+          aria-label={`${title} live demo`}
+        >
+          Live ↗
+        </a>
+      )}
+    </div>
+  </div>
+</article>

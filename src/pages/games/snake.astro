@@ -1,0 +1,201 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/layout/Nav.astro';
+import Footer from '../../components/layout/Footer.astro';
+---
+
+<Base title="Snake" page="games">
+  <Nav />
+  <main class="min-h-screen flex flex-col items-center justify-center px-6 pt-20 pb-12">
+    <div class="w-full max-w-lg">
+      <!-- Header -->
+      <div class="mb-6 flex items-center justify-between">
+        <div>
+          <a href="/games" class="text-xs text-muted hover:text-primary transition-colors">← Games</a>
+          <h1 class="font-display font-bold text-3xl text-primary mt-1">🐍 Snake</h1>
+        </div>
+        <div class="text-right">
+          <p class="text-xs uppercase tracking-widest text-muted mb-1">Score</p>
+          <p id="score" class="font-display font-bold text-3xl text-accent">0</p>
+        </div>
+      </div>
+
+      <!-- Canvas -->
+      <canvas
+        id="snake-canvas"
+        width="420"
+        height="420"
+        class="w-full rounded-2xl border border-border block"
+        style="image-rendering: pixelated;"
+      ></canvas>
+
+      <!-- Status -->
+      <p id="status" class="text-center text-sm text-muted mt-4 h-5"></p>
+
+      <!-- Controls hint -->
+      <div class="mt-6 flex items-center justify-center gap-6 text-xs text-muted">
+        <span>Arrow keys or WASD to move</span>
+        <span>·</span>
+        <span>Space to start / restart</span>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<script>
+  const canvas  = document.getElementById('snake-canvas') as HTMLCanvasElement;
+  const ctx     = canvas.getContext('2d')!;
+  const scoreEl = document.getElementById('score')!;
+  const statusEl = document.getElementById('status')!;
+
+  const GRID = 21;
+  const CELL = canvas.width / GRID;
+
+  let snake: { x: number; y: number }[] = [];
+  let dir   = { x: 1, y: 0 };
+  let next  = { x: 1, y: 0 };
+  let apple = { x: 0, y: 0 };
+  let score = 0;
+  let timer: ReturnType<typeof setInterval> | null = null;
+  let running = false;
+
+  function isDark() {
+    return document.documentElement.classList.contains('dark');
+  }
+
+  function randomApple() {
+    let pos: { x: number; y: number };
+    do {
+      pos = {
+        x: Math.floor(Math.random() * GRID),
+        y: Math.floor(Math.random() * GRID),
+      };
+    } while (snake.some((s) => s.x === pos.x && s.y === pos.y));
+    return pos;
+  }
+
+  function draw() {
+    const dark = isDark();
+
+    // Background
+    ctx.fillStyle = dark ? '#000000' : '#f5f5f7';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Subtle grid
+    ctx.strokeStyle = dark ? '#1c1c1e' : '#e5e5e7';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i <= GRID; i++) {
+      ctx.beginPath(); ctx.moveTo(i * CELL, 0); ctx.lineTo(i * CELL, canvas.height); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, i * CELL); ctx.lineTo(canvas.width, i * CELL); ctx.stroke();
+    }
+
+    // Apple
+    const ap = 3;
+    ctx.fillStyle = '#ff3b30';
+    ctx.beginPath();
+    (ctx as any).roundRect(apple.x * CELL + ap, apple.y * CELL + ap, CELL - ap * 2, CELL - ap * 2, 4);
+    ctx.fill();
+
+    // Snake
+    snake.forEach((seg, i) => {
+      const alpha = Math.max(0.3, 1 - (i / snake.length) * 0.6);
+      ctx.fillStyle = dark
+        ? `rgba(56,189,248,${alpha})`
+        : `rgba(0,102,204,${alpha})`;
+      ctx.beginPath();
+      (ctx as any).roundRect(seg.x * CELL + 2, seg.y * CELL + 2, CELL - 4, CELL - 4, 5);
+      ctx.fill();
+    });
+  }
+
+  function step() {
+    dir = { ...next };
+    const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+    // Wall collision
+    if (head.x < 0 || head.x >= GRID || head.y < 0 || head.y >= GRID) {
+      end(); return;
+    }
+    // Self collision
+    if (snake.some((s) => s.x === head.x && s.y === head.y)) {
+      end(); return;
+    }
+
+    snake.unshift(head);
+
+    if (head.x === apple.x && head.y === apple.y) {
+      score++;
+      scoreEl.textContent = String(score);
+      apple = randomApple();
+    } else {
+      snake.pop();
+    }
+
+    draw();
+  }
+
+  function end() {
+    if (timer) clearInterval(timer);
+    timer = null;
+    running = false;
+    statusEl.textContent = `Game over — score: ${score}. Press Space to restart.`;
+    // Dim the canvas
+    ctx.fillStyle = 'rgba(0,0,0,0.35)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = `bold ${CELL * 1.2}px "Plus Jakarta Sans", sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2);
+  }
+
+  function start() {
+    snake = [
+      { x: 10, y: 10 },
+      { x: 9,  y: 10 },
+      { x: 8,  y: 10 },
+    ];
+    dir   = { x: 1, y: 0 };
+    next  = { x: 1, y: 0 };
+    score = 0;
+    scoreEl.textContent = '0';
+    apple = randomApple();
+    running = true;
+
+    if (timer) clearInterval(timer);
+    timer = setInterval(step, 110);
+    statusEl.textContent = 'Arrow keys / WASD · Space to restart';
+    draw();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    const map: Record<string, { x: number; y: number }> = {
+      ArrowUp:    { x: 0,  y: -1 },
+      ArrowDown:  { x: 0,  y:  1 },
+      ArrowLeft:  { x: -1, y:  0 },
+      ArrowRight: { x: 1,  y:  0 },
+      w: { x: 0, y: -1 }, s: { x: 0, y: 1 },
+      a: { x: -1, y: 0 }, d: { x: 1, y: 0 },
+    };
+
+    if (e.key === ' ') {
+      e.preventDefault();
+      start();
+      return;
+    }
+
+    const d = map[e.key];
+    if (!d) return;
+    e.preventDefault();
+
+    // Prevent 180-degree reversal
+    if (d.x === -dir.x && d.y === -dir.y) return;
+    next = d;
+
+    if (!running) start();
+  });
+
+  // Initial draw + prompt
+  draw();
+  statusEl.textContent = 'Press Space or an arrow key to start';
+</script>

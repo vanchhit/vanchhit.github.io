@@ -1,0 +1,94 @@
+---
+import Page from '../layouts/Page.astro';
+
+const timeline = [
+  { year: '2000', event: 'Born in India' },
+  { year: '2018', event: 'Moved to the United States for university' },
+  { year: '2022', event: 'First work stint in Singapore' },
+  { year: '2023', event: 'Time in South Korea' },
+  { year: '2024', event: 'Portugal — fell in love with Lisbon' },
+  { year: '2024', event: 'Paris and then Germany' },
+  { year: '2025', event: 'Berlin — currently home' },
+];
+---
+
+<Page title="About" page="about">
+  <div class="pt-12 max-w-3xl">
+    <h1 class="font-display font-extrabold text-5xl md:text-6xl text-primary mb-8">About me</h1>
+
+    <!-- Bio -->
+    <div class="prose mb-16">
+      <p>
+        I'm Vanchhit Sahal — researcher, writer, and enthusiast of things that move fast (aircraft, trains, ideas).
+        I grew up in India, have lived across Asia, Europe, and the US, and currently call Berlin home.
+      </p>
+      <p>
+        My professional work sits at the intersection of AI safety and policy — specifically, how governance
+        structures can keep pace with rapidly advancing AI capabilities. I think compute governance is one
+        of the most underrated levers we have, and I've written and researched on that topic.
+      </p>
+      <p>
+        Outside of work: I spend weekends at airports with a camera, plan rail journeys across Europe,
+        follow energy transitions obsessively, and read more than is probably healthy.
+      </p>
+      <p>
+        This website is where I write things down, share projects, and keep a record of the places I've been.
+      </p>
+    </div>
+
+    <!-- Resume -->
+    <div class="mb-16 p-6 rounded-2xl border border-border bg-surface flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <div class="flex-1">
+        <p class="font-display font-bold text-primary text-lg mb-1">Résumé</p>
+        <p class="text-sm text-muted">Up to date as of 2025.</p>
+      </div>
+      <a
+        href="/Vanchhit_Sahal_Resume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="px-5 py-2.5 rounded-full bg-accent text-bg text-sm font-semibold hover:opacity-85 transition-opacity"
+      >
+        Download PDF
+      </a>
+    </div>
+
+    <!-- Timeline -->
+    <div class="mb-16">
+      <h2 class="font-display font-bold text-2xl text-primary mb-8">Timeline</h2>
+      <div class="relative">
+        <!-- Vertical line -->
+        <div class="absolute left-[4.5rem] top-0 bottom-0 w-px bg-border"></div>
+
+        <div class="flex flex-col gap-6">
+          {timeline.map(({ year, event }) => (
+            <div class="flex items-start gap-6 fade-up">
+              <span class="w-16 shrink-0 text-right text-sm font-mono text-muted pt-0.5">{year}</span>
+              <div class="relative flex items-center">
+                <div class="w-2 h-2 rounded-full bg-accent ring-4 ring-bg shrink-0 ml-[0.875rem] mr-4"></div>
+                <p class="text-primary text-sm">{event}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Values -->
+    <div>
+      <h2 class="font-display font-bold text-2xl text-primary mb-6">What I care about</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {[
+          { label: 'Long-termism', desc: 'Decisions made today have compounding effects. I try to reason about decades, not quarters.' },
+          { label: 'Honesty', desc: 'Strong opinions, loosely held, stated plainly.' },
+          { label: 'Making things', desc: "I'd rather build something imperfect than theorise about something perfect." },
+          { label: 'Going places', desc: 'Literally. I think travel is one of the highest-return investments a person can make.' },
+        ].map(({ label, desc }) => (
+          <div class="p-5 rounded-xl border border-border bg-surface fade-up">
+            <p class="font-display font-bold text-primary mb-1">{label}</p>
+            <p class="text-sm text-muted leading-relaxed">{desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</Page>

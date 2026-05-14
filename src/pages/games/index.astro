@@ -1,0 +1,57 @@
+---
+import Page from '../../layouts/Page.astro';
+
+const games = [
+  {
+    href: '/games/snake',
+    title: 'Snake',
+    description: "The classic. Eat apples, don't hit the wall or yourself.",
+    emoji: '🐍',
+    status: 'playable',
+  },
+  {
+    href: '#',
+    title: 'More coming',
+    description: 'Word puzzles, logic games, and geography quizzes in the works.',
+    emoji: '🧩',
+    status: 'coming-soon',
+  },
+];
+---
+
+<Page title="Games" page="games">
+  <div class="pt-12">
+    <h1 class="font-display font-extrabold text-5xl md:text-6xl text-primary mb-4">Games</h1>
+    <p class="text-muted text-lg mb-16 max-w-xl">
+      Small games to play in your browser. No accounts, no tracking.
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {games.map(({ href, title, description, emoji, status }) => (
+        <a
+          href={status === 'playable' ? href : undefined}
+          class={`group relative flex flex-col gap-4 p-8 rounded-2xl border transition-all duration-300 ${
+            status === 'playable'
+              ? 'border-border bg-surface hover:border-accent hover:shadow-lg cursor-pointer'
+              : 'border-border/50 bg-surface/50 cursor-default opacity-60'
+          }`}
+          aria-disabled={status !== 'playable'}
+        >
+          <span class="text-4xl">{emoji}</span>
+          <div>
+            <h2 class="font-display font-bold text-xl text-primary mb-1 group-hover:text-accent transition-colors">
+              {title}
+            </h2>
+            <p class="text-sm text-muted leading-snug">{description}</p>
+          </div>
+          {status === 'playable' && (
+            <span class="mt-auto text-sm font-semibold text-accent">Play →</span>
+          )}
+          {status === 'coming-soon' && (
+            <span class="mt-auto text-xs font-semibold uppercase tracking-widest text-muted">Coming soon</span>
+          )}
+        </a>
+      ))}
+    </div>
+  </div>
+</Page>

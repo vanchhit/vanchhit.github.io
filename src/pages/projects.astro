@@ -1,0 +1,98 @@
+---
+import Page from '../layouts/Page.astro';
+import ProjectCard from '../components/projects/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const sorted = allProjects.sort((a, b) =>
+  b.data.date.localeCompare(a.data.date)
+);
+const featured = sorted.filter((p) => p.data.featured);
+const rest     = sorted.filter((p) => !p.data.featured);
+
+const allTags = [...new Set(allProjects.flatMap((p) => p.data.tags))].sort();
+---
+
+<Page title="Projects" page="projects">
+  <div class="pt-12">
+    <h1 class="font-display font-extrabold text-5xl md:text-6xl text-primary mb-4">Projects</h1>
+    <p class="text-muted text-lg mb-12 max-w-xl">
+      Research, tools, and experiments. Some finished, some perpetually in progress.
+    </p>
+
+    <!-- Tag filter -->
+    <div class="flex flex-wrap gap-2 mb-10">
+      <button data-tag="all" class="tag-btn active px-4 py-1.5 rounded-full border border-accent bg-accent text-bg text-sm font-semibold transition-colors">
+        All
+      </button>
+      {allTags.map((tag) => (
+        <button data-tag={tag} class="tag-btn px-4 py-1.5 rounded-full border border-border text-muted text-sm font-semibold hover:border-accent hover:text-accent transition-colors capitalize">
+          {tag}
+        </button>
+      ))}
+    </div>
+
+    <!-- Featured -->
+    {featured.length > 0 && (
+      <div class="mb-6">
+        <p class="text-xs font-semibold uppercase tracking-widest text-muted mb-4">Featured</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {featured.map((p) => (
+            <div class="project-card fade-up" data-tags={p.data.tags.join(',')}>
+              <ProjectCard project={p} />
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Rest -->
+    {rest.length > 0 && (
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-muted mb-4 mt-10">All projects</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {rest.map((p) => (
+            <div class="project-card fade-up" data-tags={p.data.tags.join(',')}>
+              <ProjectCard project={p} />
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <p id="no-results" class="hidden py-16 text-center text-muted">
+      No projects with that tag.
+    </p>
+  </div>
+</Page>
+
+<script>
+  const buttons  = document.querySelectorAll<HTMLButtonElement>('.tag-btn');
+  const cards    = document.querySelectorAll<HTMLElement>('.project-card');
+  const noResult = document.getElementById('no-results')!;
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const tag = btn.dataset.tag ?? 'all';
+
+      buttons.forEach((b) => {
+        const active = b.dataset.tag === tag;
+        b.classList.toggle('bg-accent', active);
+        b.classList.toggle('text-bg', active);
+        b.classList.toggle('border-accent', active);
+        b.classList.toggle('text-muted', !active);
+        b.classList.toggle('border-border', !active);
+      });
+
+      let visible = 0;
+      cards.forEach((el) => {
+        const tags = (el.dataset.tags ?? '').split(',');
+        const show = tag === 'all' || tags.includes(tag);
+        el.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      noResult.classList.toggle('hidden', visible > 0);
+    });
+  });
+</script>

@@ -1,0 +1,33 @@
+---
+import Page from '../../../layouts/Page.astro';
+import BlogCard from '../../../components/blog/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft && data.categories.includes('ai-safety')))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Page title="AI Safety" page="ai-safety" fullWidth>
+  <!-- Hero -->
+  <div class="px-6 pt-28 pb-16 border-b border-border" style="background: linear-gradient(to bottom, #1a0a2e, var(--bg));">
+    <div class="max-w-site mx-auto">
+      <p class="text-[#c084fc] text-xs font-semibold uppercase tracking-widest mb-4">Blog → AI Safety</p>
+      <h1 class="font-display font-extrabold text-5xl md:text-6xl text-white mb-4">
+        🔬 AI Safety
+      </h1>
+      <p class="text-[#98989d] text-lg max-w-xl">
+        Alignment, governance, compute policy, and what it means to build AI that actually benefits humanity.
+      </p>
+    </div>
+  </div>
+
+  <div class="max-w-site mx-auto px-6 py-12">
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {posts.map((post) => <BlogCard post={post} />)}
+      </div>
+    ) : (
+      <p class="text-muted text-center py-20">Posts coming soon.</p>
+    )}
+  </div>
+</Page>
