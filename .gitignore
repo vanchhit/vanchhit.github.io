@@ -18,6 +18,9 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Local-only documentation (not published to GitHub)
+Guide.md
+
 # Logs
 *.log
 npm-debug.log*

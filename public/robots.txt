@@ -1,0 +1,85 @@
+# ── AI training crawlers — opt out of content being used as training data ──────
+# These are voluntary signals. Major AI labs (OpenAI, Anthropic, Google) have
+# committed to honouring robots.txt. Enforcement is not guaranteed.
+
+# OpenAI
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+# Anthropic
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+# Google (Gemini / Bard training — separate from Googlebot search indexing)
+User-agent: Google-Extended
+Disallow: /
+
+# Meta
+User-agent: FacebookBot
+Disallow: /
+
+# ByteDance / TikTok
+User-agent: Bytespider
+Disallow: /
+
+# Common Crawl (used as training data by many AI companies)
+User-agent: CCBot
+Disallow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Disallow: /
+
+# Cohere
+User-agent: cohere-ai
+Disallow: /
+
+# Apple (training data)
+User-agent: Applebot-Extended
+Disallow: /
+
+# Allen Institute for AI
+User-agent: AI2Bot
+Disallow: /
+
+# Diffbot
+User-agent: Diffbot
+Disallow: /
+
+# Timpi
+User-agent: Timpibot
+Disallow: /
+
+# ImagesiftBot
+User-agent: ImagesiftBot
+Disallow: /
+
+# Omgili / Webz.io
+User-agent: omgili
+Disallow: /
+
+User-agent: omgilibot
+Disallow: /
+
+# ── Search engine crawlers — allow (normal indexing is fine) ────────────────
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# ── All other bots — allow by default ───────────────────────────────────────
+User-agent: *
+Disallow:
