@@ -1,0 +1,101 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/layout/Nav.astro';
+import Footer from '../../components/layout/Footer.astro';
+import { getEntry, render } from 'astro:content';
+
+const entry = await getEntry('rulebooks', 'berlin-snake');
+const { Content } = await render(entry);
+---
+
+<Base title="JetLag Snake: Berlin" page="games">
+  <Nav />
+  <main class="min-h-screen px-6 pt-20 pb-16">
+    <div class="max-w-5xl mx-auto">
+
+      <!-- Header -->
+      <div class="mb-8">
+        <a href="/games" class="text-xs text-muted hover:text-primary transition-colors">← Games</a>
+        <div class="mt-2 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 class="font-display font-bold text-3xl text-primary">JetLag Snake: Berlin</h1>
+            <p class="text-muted text-sm mt-1">A real-life snake game across Berlin's U-Bahn &amp; S-Bahn network</p>
+          </div>
+          <a
+            href="https://vanchhit.github.io/JetLag-Snake-Berlin/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-xs text-accent hover:underline"
+          >
+            Open in new tab ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-1 mb-6 border-b border-border">
+        <button
+          id="tab-play"
+          class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-accent text-accent transition-colors"
+          data-tab="play"
+        >
+          Play
+        </button>
+        <button
+          id="tab-rulebook"
+          class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-muted hover:text-primary transition-colors"
+          data-tab="rulebook"
+        >
+          Rulebook
+        </button>
+      </div>
+
+      <!-- Play panel -->
+      <div id="panel-play">
+        <iframe
+          src="https://vanchhit.github.io/JetLag-Snake-Berlin/"
+          title="JetLag Snake: Berlin"
+          class="w-full rounded-2xl border border-border"
+          style="height: calc(100vh - 220px); min-height: 500px;"
+          allow="fullscreen"
+          loading="lazy"
+        ></iframe>
+      </div>
+
+      <!-- Rulebook panel -->
+      <div id="panel-rulebook" class="hidden">
+        <div class="prose max-w-3xl">
+          <Content />
+        </div>
+      </div>
+
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<script>
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.tab-btn');
+  const panels: Record<string, HTMLElement | null> = {
+    play: document.getElementById('panel-play'),
+    rulebook: document.getElementById('panel-rulebook'),
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab!;
+
+      tabs.forEach((t) => {
+        const active = t.dataset.tab === target;
+        t.classList.toggle('border-accent', active);
+        t.classList.toggle('text-accent', active);
+        t.classList.toggle('border-transparent', !active);
+        t.classList.toggle('text-muted', !active);
+      });
+
+      Object.entries(panels).forEach(([key, el]) => {
+        el?.classList.toggle('hidden', key !== target);
+      });
+    });
+  });
+</script>

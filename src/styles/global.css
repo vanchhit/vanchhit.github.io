@@ -177,3 +177,8 @@ h1, h2, h3, h4, h5, h6 {
 .prose li { margin-bottom: 0.375em; line-height: 1.7; }
 .prose hr { border-color: var(--border); margin: 2.5em 0; }
 .prose img { border-radius: 10px; max-width: 100%; margin: 1.5em 0; }
+.prose table { width: 100%; border-collapse: collapse; margin: 1.5em 0; font-size: 0.95em; }
+.prose thead { border-bottom: 2px solid var(--border); }
+.prose th { text-align: left; padding: 0.5em 0.75em; font-weight: 600; color: var(--text); }
+.prose td { padding: 0.5em 0.75em; border-bottom: 1px solid var(--border); color: var(--text-muted); }
+.prose tr:last-child td { border-bottom: none; }
