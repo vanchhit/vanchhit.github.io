@@ -1,37 +1,45 @@
 ---
-// Hero is always dark for dramatic impact, regardless of system theme.
+// Hero stays dark regardless of system theme for cinematic impact.
 ---
 
 <section
   id="top"
-  class="relative min-h-screen bg-black flex flex-col items-center justify-center text-center px-6 overflow-hidden"
+  class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden"
+  style="background-color: oklch(0.10 0.01 260);"
 >
-  <!-- Subtle grid background -->
+  <!-- Subtle grid overlay -->
   <div
-    class="absolute inset-0 opacity-[0.04]"
+    class="absolute inset-0 opacity-[0.035]"
     style="background-image: linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px); background-size: 64px 64px;"
     aria-hidden="true"
   ></div>
 
   <!-- Content -->
   <div class="relative z-10 max-w-4xl mx-auto">
-    <p class="text-[#98989d] text-sm font-medium tracking-[0.2em] uppercase mb-8 animate-[fadeIn_0.8s_ease_forwards]">
-      Hello, I'm
+    <p
+      class="font-mono text-xs uppercase tracking-[0.2em] mb-8"
+      style="color: oklch(0.55 0.015 260); animation: fadeIn 0.8s ease forwards;"
+    >
+      Vanchhit · personal site
     </p>
 
     <h1
-      class="font-display font-extrabold text-white leading-none tracking-tight mb-6"
-      style="font-size: clamp(3rem, 10vw, 9rem); animation: fadeUp 0.8s 0.2s ease both;"
+      class="font-display font-semibold leading-[1.05] tracking-tight mb-7"
+      style="font-size: clamp(2.4rem, 7vw, 5.5rem); color: oklch(0.96 0.005 80); animation: fadeUp 0.8s 0.2s ease both;"
     >
-      Vanchhit<br />Sahal
+      A quiet corner for{' '}
+      <span style="color: oklch(0.72 0.15 250)">projects</span>,{' '}
+      <span style="color: oklch(0.78 0.15 70)">writing</span>,
+      <br class="hidden sm:block" />
+      and the places I keep going back to.
     </h1>
 
     <p
-      class="text-[#98989d] text-lg md:text-xl max-w-xl mx-auto leading-relaxed mb-12"
-      style="animation: fadeUp 0.8s 0.4s ease both;"
+      class="text-lg md:text-xl max-w-xl mx-auto leading-relaxed mb-12"
+      style="color: oklch(0.58 0.02 260); animation: fadeUp 0.8s 0.4s ease both;"
     >
-      AI safety · aviation · trains · climate ·
-      the occasional game
+      Aviation, trains, AI safety, and climate — plus a small map of
+      countries visited and spots worth a detour.
     </p>
 
     <div
@@ -39,38 +47,43 @@
       style="animation: fadeUp 0.8s 0.6s ease both;"
     >
       <a
-        href="/about"
-        class="px-6 py-3 bg-white text-black font-semibold text-sm rounded-full hover:bg-[#f5f5f7] transition-colors"
+        href="/blog"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-opacity hover:opacity-85"
+        style="background-color: oklch(0.96 0.005 80); color: oklch(0.10 0.01 260);"
       >
-        About me
+        Read the blog
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 10 10 2M5 2h5v5"/>
+        </svg>
       </a>
       <a
-        href="/blog"
-        class="px-6 py-3 border border-white/30 text-white font-semibold text-sm rounded-full hover:border-white/60 transition-colors"
+        href="/projects"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-colors"
+        style="border: 1px solid oklch(0.40 0.01 260); color: oklch(0.75 0.015 260);"
+        onmouseover="this.style.borderColor='oklch(0.60 0.01 260)'; this.style.color='oklch(0.90 0.005 80)';"
+        onmouseout="this.style.borderColor='oklch(0.40 0.01 260)'; this.style.color='oklch(0.75 0.015 260)';"
       >
-        Read my writing
+        See projects
       </a>
     </div>
   </div>
 
   <!-- Scroll cue -->
   <div
-    class="absolute bottom-10 left-1/2 -translate-x-1/2"
-    style="animation: fadeIn 1.2s 1s ease both;"
+    class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
+    style="color: oklch(0.42 0.01 260); animation: fadeIn 1.2s 1s ease both;"
     aria-hidden="true"
   >
-    <div class="flex flex-col items-center gap-1.5 text-[#6e6e73]">
-      <span class="text-xs tracking-widest uppercase">Scroll</span>
-      <svg class="animate-bounce" width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
+    <span class="font-mono text-[10px] tracking-widest uppercase">Scroll</span>
+    <svg class="animate-bounce" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 3v10M4 9l4 4 4-4"/>
+    </svg>
   </div>
 </section>
 
 <style>
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
+    from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
   }
   @keyframes fadeIn {

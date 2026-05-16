@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages
+
+# Builds the site on every push to main and publishes the static `dist/` output
+# to the `gh-pages` branch. GitHub Pages then serves it at vanchhit.com via the
+# CNAME file in `public/`.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build
+        run: bun run build
+
+      # The TanStack Start build emits a Cloudflare Worker bundle plus the
+      # client assets in `dist/client/`. For GitHub Pages we serve the client
+      # bundle directly. If you prefer full prerendered HTML, see Guide.md.
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/client
+          cname: vanchhit.com

@@ -5,17 +5,19 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: 'var(--bg)',
+        bg:      'var(--bg)',
         surface: 'var(--bg-surface)',
+        card:    'var(--card)',
         primary: 'var(--text)',
-        muted: 'var(--text-muted)',
-        border: 'var(--border)',
-        accent: 'var(--accent)',
+        muted:   'var(--text-muted)',
+        border:  'var(--border)',
+        accent:  'var(--accent)',
+        warm:    'var(--warm)',
       },
       fontFamily: {
-        display: ['"Plus Jakarta Sans"', 'sans-serif'],
-        body: ['Inter', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
+        display: ['"Inter Tight"', 'sans-serif'],
+        body:    ['Inter', 'sans-serif'],
+        mono:    ['"JetBrains Mono"', 'monospace'],
       },
       maxWidth: {
         site: '1200px',

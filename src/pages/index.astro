@@ -12,49 +12,12 @@ const latestPosts = allPosts
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 3);
 
-const sections = [
-  {
-    href: '/blog',
-    label: 'Blog',
-    desc: 'Aviation, trains, AI safety, climate & more',
-    emoji: '✍️',
-    accent: '#333333',
-  },
-  {
-    href: '/projects',
-    label: 'Projects',
-    desc: "Things I've built and researched",
-    emoji: '🛠️',
-    accent: '#0066cc',
-  },
-  {
-    href: '/travel',
-    label: 'Travel',
-    desc: 'Countries lived in & favourite places',
-    emoji: '🗺️',
-    accent: '#0e5c8a',
-  },
-  {
-    href: '/interests',
-    label: 'Interests',
-    desc: 'Aviation, trains, books, films and obsessions',
-    emoji: '🔭',
-    accent: '#7c3aed',
-  },
-  {
-    href: '/games',
-    label: 'Games',
-    desc: 'Mini games to play in your browser',
-    emoji: '🕹️',
-    accent: '#9333ea',
-  },
-  {
-    href: '/about',
-    label: 'About',
-    desc: "Who I am, where I've been, what I care about",
-    emoji: '👤',
-    accent: '#c45c26',
-  },
+const topics = [
+  { href: '/blog/aviation',  short: 'Aviation',  desc: 'Spotting, airports & aircraft',   color: 'oklch(0.60 0.17 230)' },
+  { href: '/blog/trains',    short: 'Trains',    desc: 'Rail travel & rolling stock',      color: 'oklch(0.62 0.16 55)'  },
+  { href: '/blog/ai-safety', short: 'AI Safety', desc: 'Alignment, governance & risk',     color: 'oklch(0.52 0.22 275)' },
+  { href: '/blog/climate',   short: 'Climate',   desc: 'Energy & decarbonisation',         color: 'oklch(0.50 0.11 150)' },
+  { href: '/blog',           short: 'General',   desc: 'Everything else',                  color: 'var(--accent)'        },
 ];
 ---
 
@@ -62,41 +25,33 @@ const sections = [
   <Nav />
   <Hero />
 
+  <!-- Topic strip -->
+  <div class="border-y border-border bg-surface/50">
+    <div class="max-w-site mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 divide-x divide-y lg:divide-y-0 divide-border overflow-hidden">
+      {topics.map(({ href, short, desc, color }) => (
+        <a
+          href={href}
+          class="group flex flex-col gap-1 bg-bg px-5 py-6 transition-colors hover:bg-surface"
+        >
+          <span class="font-mono text-[10px] uppercase tracking-widest text-muted">Topic</span>
+          <span class="font-display text-base font-semibold tracking-tight" style={`color: ${color}`}>{short}</span>
+          <span class="text-xs text-muted leading-snug">{desc}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+
   <!-- Main content -->
   <div class="max-w-site mx-auto px-6">
     <!-- Currently -->
     <Currently />
 
-    <!-- Section tiles -->
-    <section class="py-16 border-b border-border">
-      <p class="text-xs font-semibold uppercase tracking-widest text-muted mb-8">Explore</p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {sections.map(({ href, label, desc, emoji, accent }) => (
-          <a
-            href={href}
-            class="group relative flex flex-col gap-3 p-6 rounded-2xl border border-border bg-surface hover:border-accent transition-all duration-300 hover:shadow-md"
-          >
-            <span class="text-2xl">{emoji}</span>
-            <div>
-              <h2 class="font-display font-bold text-primary text-lg mb-1 group-hover:text-accent transition-colors">
-                {label}
-              </h2>
-              <p class="text-sm text-muted leading-snug">{desc}</p>
-            </div>
-            <span class="mt-auto text-sm text-accent font-medium">
-              Explore →
-            </span>
-          </a>
-        ))}
-      </div>
-    </section>
-
     <!-- Latest posts -->
     {latestPosts.length > 0 && (
       <section class="py-16 border-b border-border">
         <div class="flex items-center justify-between mb-8">
-          <p class="text-xs font-semibold uppercase tracking-widest text-muted">Latest writing</p>
-          <a href="/blog" class="text-sm text-accent hover:opacity-75 transition-opacity font-medium">
+          <p class="font-display text-2xl font-semibold tracking-tight text-primary">Latest writing</p>
+          <a href="/blog" class="text-sm text-muted hover:text-primary transition-colors font-medium">
             All posts →
           </a>
         </div>
@@ -110,11 +65,37 @@ const sections = [
       </section>
     )}
 
+    <!-- Travel teaser -->
+    <section class="py-16 border-b border-border">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-widest text-muted mb-3">Travel</p>
+          <h2 class="font-display text-3xl font-semibold tracking-tight text-primary mb-4">
+            Countries, and counting.
+          </h2>
+          <p class="text-muted text-base leading-relaxed max-w-md mb-6">
+            An interactive world map of where I've been, plus pins for spots I'd
+            send a friend back to.
+          </p>
+          <a
+            href="/travel"
+            class="inline-flex items-center gap-2 text-sm font-medium text-accent hover:gap-3 transition-all"
+          >
+            Open the map
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 10 10 2M5 2h5v5"/>
+            </svg>
+          </a>
+        </div>
+        <div class="aspect-[4/3] rounded-2xl border border-border motif-blueprint"></div>
+      </div>
+    </section>
+
     <!-- Now teaser -->
     <section class="py-16">
       <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-8 rounded-2xl border border-border bg-surface">
         <div class="flex-1">
-          <p class="text-xs font-semibold uppercase tracking-widest text-muted mb-2">Now</p>
+          <p class="font-mono text-xs uppercase tracking-widest text-muted mb-2">Now</p>
           <p class="text-primary text-sm leading-relaxed">
             What I'm currently focused on — updated manually, not algorithmically.
           </p>

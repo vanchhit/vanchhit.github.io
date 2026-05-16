@@ -1,59 +1,66 @@
 /* ─── Google Fonts (must precede @tailwind directives) ──────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Design tokens ─────────────────────────────────────────── */
+/* ─── Design tokens — warm paper + oklch ────────────────────── */
 :root {
-  --bg: #ffffff;
-  --bg-surface: #f5f5f7;
-  --text: #1d1d1f;
-  --text-muted: #6e6e73;
-  --border: #d2d2d7;
-  --accent: #1d1d1f;
+  --bg:          oklch(0.985 0.004 80);   /* warm paper white */
+  --bg-surface:  oklch(0.96  0.005 80);   /* slightly darker surface */
+  --card:        oklch(1 0 0);
+  --text:        oklch(0.18  0.01  260);  /* near-black navy */
+  --text-muted:  oklch(0.48  0.015 260);
+  --border:      oklch(0.90  0.008 80);
+  --accent:      oklch(0.55  0.18  250);  /* brand blue */
+  --warm:        oklch(0.72  0.16  65);   /* warm orange */
 }
 
 html.dark {
-  --bg: #000000;
-  --bg-surface: #1c1c1e;
-  --text: #f5f5f7;
-  --text-muted: #98989d;
-  --border: #3a3a3c;
-  --accent: #f5f5f7;
+  --bg:          oklch(0.14  0.012 260);  /* navy dark */
+  --bg-surface:  oklch(0.18  0.014 260);
+  --card:        oklch(0.18  0.014 260);
+  --text:        oklch(0.96  0.005 80);
+  --text-muted:  oklch(0.70  0.020 80);
+  --border:      oklch(0.28  0.018 260);
+  --accent:      oklch(0.72  0.15  250);
+  --warm:        oklch(0.78  0.15  70);
 }
 
 /* ─── Per-page accent colors ────────────────────────────────── */
-body[data-page="about"]      { --accent: #c45c26; }
-html.dark body[data-page="about"]    { --accent: #e87040; }
+body[data-page="about"]      { --accent: oklch(0.58 0.16 40);  }
+html.dark body[data-page="about"]    { --accent: oklch(0.74 0.15 50);  }
 
-body[data-page="projects"]   { --accent: #0066cc; }
-html.dark body[data-page="projects"] { --accent: #2997ff; }
+body[data-page="projects"]   { --accent: oklch(0.55 0.18 250); }
+html.dark body[data-page="projects"] { --accent: oklch(0.72 0.15 250); }
 
-body[data-page="blog"]       { --accent: #333333; }
-html.dark body[data-page="blog"]     { --accent: #ebebeb; }
+body[data-page="blog"]       { --accent: oklch(0.35 0.01 260); }
+html.dark body[data-page="blog"]     { --accent: oklch(0.82 0.01 260); }
 
-body[data-page="aviation"]   { --accent: #1a6fc4; }
-html.dark body[data-page="aviation"] { --accent: #4db8ff; }
+body[data-page="aviation"]   { --accent: oklch(0.60 0.17 230); }
+html.dark body[data-page="aviation"] { --accent: oklch(0.76 0.14 230); }
 
-body[data-page="trains"]     { --accent: #7b5e3a; }
-html.dark body[data-page="trains"]   { --accent: #c4956a; }
+body[data-page="trains"]     { --accent: oklch(0.62 0.16 55);  }
+html.dark body[data-page="trains"]   { --accent: oklch(0.78 0.15 60);  }
 
-body[data-page="ai-safety"]  { --accent: #6b21a8; }
-html.dark body[data-page="ai-safety"]{ --accent: #c084fc; }
+body[data-page="ai-safety"]  { --accent: oklch(0.52 0.22 275); }
+html.dark body[data-page="ai-safety"]{ --accent: oklch(0.74 0.17 275); }
 
-body[data-page="climate"]    { --accent: #166534; }
-html.dark body[data-page="climate"]  { --accent: #4ade80; }
+body[data-page="climate"]    { --accent: oklch(0.50 0.11 150); }
+html.dark body[data-page="climate"]  { --accent: oklch(0.72 0.13 150); }
 
-body[data-page="travel"]     { --accent: #0e5c8a; }
-html.dark body[data-page="travel"]   { --accent: #38bdf8; }
+body[data-page="travel"]     { --accent: oklch(0.60 0.17 230); }
+html.dark body[data-page="travel"]   { --accent: oklch(0.76 0.14 230); }
 
-body[data-page="interests"]  { --accent: #7c3aed; }
-html.dark body[data-page="interests"]{ --accent: #a78bfa; }
+body[data-page="interests"]  { --accent: oklch(0.52 0.22 275); }
+html.dark body[data-page="interests"]{ --accent: oklch(0.74 0.17 275); }
 
-body[data-page="games"]      { --accent: #9333ea; }
-html.dark body[data-page="games"]    { --accent: #c084fc; }
+body[data-page="games"]      { --accent: oklch(0.55 0.22 300); }
+html.dark body[data-page="games"]    { --accent: oklch(0.75 0.18 300); }
+
+body[data-page="cool-stuff"] { --accent: oklch(0.55 0.18 250); }
+html.dark body[data-page="cool-stuff"]{ --accent: oklch(0.72 0.15 250); }
 
 /* ─── Base ──────────────────────────────────────────────────── */
 html {
@@ -64,16 +71,27 @@ body {
   background-color: var(--bg);
   color: var(--text);
   font-family: 'Inter', sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "cv11";
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter Tight', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background-color: color-mix(in oklab, var(--accent) 25%, transparent);
 }
 
 /* ─── Scroll-reveal animation ───────────────────────────────── */
 .fade-up {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .fade-up.visible {
@@ -90,32 +108,51 @@ body {
 }
 
 /* ─── Typography utilities ──────────────────────────────────── */
-.font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+.font-display { font-family: 'Inter Tight', sans-serif; }
 .font-mono    { font-family: 'JetBrains Mono', monospace; }
+
+/* ─── Motif backgrounds ─────────────────────────────────────── */
+.motif-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--accent) 10%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--accent) 10%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.motif-blueprint {
+  background-color: color-mix(in oklab, var(--accent) 6%, var(--bg-surface));
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--accent) 15%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--accent) 15%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
 
 /* ─── Blog prose styles ─────────────────────────────────────── */
 .prose {
   color: var(--text);
+  font-size: 1.0625rem;
+  line-height: 1.75;
   max-width: 68ch;
 }
 .prose h1, .prose h2, .prose h3, .prose h4 {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-weight: 700;
   color: var(--text);
+  letter-spacing: -0.02em;
   margin-top: 2em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.6em;
 }
 .prose h1 { font-size: 2.25rem; }
-.prose h2 { font-size: 1.75rem; }
-.prose h3 { font-size: 1.375rem; }
-.prose p  { line-height: 1.75; margin-bottom: 1.25em; }
-.prose a  { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
-.prose a:hover { opacity: 0.75; }
+.prose h2 { font-size: 1.6rem;  margin-top: 2.5rem; }
+.prose h3 { font-size: 1.25rem; }
+.prose p  { line-height: 1.75; margin-bottom: 1.1em; }
+.prose a  { color: var(--accent); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.prose a:hover { text-decoration-thickness: 2px; }
 .prose code {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.875em;
+  font-size: 0.9em;
   background: var(--bg-surface);
-  padding: 0.2em 0.4em;
+  padding: 0.1em 0.35em;
   border-radius: 4px;
 }
 .prose pre {
@@ -134,19 +171,9 @@ body {
   font-style: italic;
   margin: 1.5em 0;
 }
-.prose ul, .prose ol { padding-left: 1.5rem; margin-bottom: 1.25em; }
+.prose ul, .prose ol { padding-left: 1.4rem; margin-bottom: 1.1em; }
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
 .prose li { margin-bottom: 0.375em; line-height: 1.7; }
 .prose hr { border-color: var(--border); margin: 2.5em 0; }
-.prose img { border-radius: 8px; max-width: 100%; }
-
-/* ─── Nav scroll behaviour ──────────────────────────────────── */
-#main-nav.scrolled {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-}
-
-html.dark #main-nav.scrolled {
-  background: rgba(0, 0, 0, 0.8);
-}
+.prose img { border-radius: 10px; max-width: 100%; margin: 1.5em 0; }
