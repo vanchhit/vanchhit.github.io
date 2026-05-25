@@ -26,28 +26,88 @@ import Footer from '../../components/layout/Footer.astro';
         width="420"
         height="420"
         class="w-full rounded-2xl border border-border block"
-        style="image-rendering: pixelated;"
+        style="image-rendering: pixelated; aspect-ratio: 1 / 1; height: auto;"
       ></canvas>
 
       <!-- Status -->
       <p id="status" class="text-center text-sm text-muted mt-4 h-5"></p>
 
-      <!-- Controls hint -->
-      <div class="mt-6 flex items-center justify-center gap-6 text-xs text-muted">
+      <!-- Controls hint — keyboard (hidden on touch devices) -->
+      <div class="mt-6 flex items-center justify-center gap-6 text-xs text-muted hint-keyboard">
         <span>Arrow keys or WASD to move</span>
         <span>·</span>
         <span>Space to start / restart</span>
+      </div>
+
+      <!-- Controls hint — touch (shown on touch devices) -->
+      <p class="mt-6 text-center text-xs text-muted hint-touch">Swipe or use buttons to move · Tap center to start</p>
+
+      <!-- D-pad (touch devices only) -->
+      <div id="dpad" class="mt-4 flex flex-col items-center gap-1 dpad-container">
+        <div>
+          <button id="btn-up" class="dpad-btn" aria-label="Up">↑</button>
+        </div>
+        <div class="flex gap-1">
+          <button id="btn-left" class="dpad-btn" aria-label="Left">←</button>
+          <button id="btn-center" class="dpad-btn dpad-center" aria-label="Start / Restart">●</button>
+          <button id="btn-right" class="dpad-btn" aria-label="Right">→</button>
+        </div>
+        <div>
+          <button id="btn-down" class="dpad-btn" aria-label="Down">↓</button>
+        </div>
       </div>
     </div>
   </main>
   <Footer />
 </Base>
 
+<style>
+  .hint-keyboard { display: flex; }
+  .hint-touch    { display: none; }
+  .dpad-container { display: none; }
+
+  @media (pointer: coarse) {
+    .hint-keyboard  { display: none; }
+    .hint-touch     { display: block; }
+    .dpad-container { display: flex; }
+  }
+
+  .dpad-btn {
+    width: 3.25rem;
+    height: 3.25rem;
+    font-size: 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    background: var(--bg-surface);
+    color: var(--text);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.1s ease, transform 0.08s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .dpad-btn:active {
+    transform: scale(0.93);
+  }
+
+  .dpad-center {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: transparent;
+  }
+</style>
+
 <script>
   const canvas  = document.getElementById('snake-canvas') as HTMLCanvasElement;
   const ctx     = canvas.getContext('2d')!;
   const scoreEl = document.getElementById('score')!;
   const statusEl = document.getElementById('status')!;
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
 
   const GRID = 21;
   const CELL = canvas.width / GRID;
@@ -139,7 +199,9 @@ import Footer from '../../components/layout/Footer.astro';
     if (timer) clearInterval(timer);
     timer = null;
     running = false;
-    statusEl.textContent = `Game over — score: ${score}. Press Space to restart.`;
+    statusEl.textContent = isTouch
+      ? `Game over — score: ${score}. Tap to restart.`
+      : `Game over — score: ${score}. Press Space to restart.`;
     // Dim the canvas
     ctx.fillStyle = 'rgba(0,0,0,0.35)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -164,7 +226,7 @@ import Footer from '../../components/layout/Footer.astro';
 
     if (timer) clearInterval(timer);
     timer = setInterval(step, 110);
-    statusEl.textContent = 'Arrow keys / WASD · Space to restart';
+    statusEl.textContent = isTouch ? 'Swipe or tap buttons · Tap ● to restart' : 'Arrow keys / WASD · Space to restart';
     draw();
   }
 
@@ -195,7 +257,58 @@ import Footer from '../../components/layout/Footer.astro';
     if (!running) start();
   });
 
+  // Shared direction-change helper (prevents 180° reversal)
+  function changeDir(d: { x: number; y: number }) {
+    if (d.x === -dir.x && d.y === -dir.y) return;
+    next = d;
+    if (!running) start();
+  }
+
+  // D-pad buttons
+  const dpadMap: Record<string, { x: number; y: number }> = {
+    'btn-up':    { x: 0,  y: -1 },
+    'btn-down':  { x: 0,  y:  1 },
+    'btn-left':  { x: -1, y:  0 },
+    'btn-right': { x: 1,  y:  0 },
+  };
+  ['btn-up', 'btn-down', 'btn-left', 'btn-right'].forEach((id) => {
+    document.getElementById(id)!.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      changeDir(dpadMap[id]);
+    });
+  });
+  document.getElementById('btn-center')!.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    start();
+  });
+
+  // Swipe + tap on canvas
+  let touchStartX = 0;
+  let touchStartY = 0;
+  const SWIPE_THRESHOLD = 30;
+
+  canvas.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].clientX;
+    touchStartY = e.changedTouches[0].clientY;
+    e.preventDefault();
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) < SWIPE_THRESHOLD && Math.abs(dy) < SWIPE_THRESHOLD) {
+      start();
+      return;
+    }
+    if (Math.abs(dx) >= Math.abs(dy)) {
+      changeDir(dx > 0 ? { x: 1, y: 0 } : { x: -1, y: 0 });
+    } else {
+      changeDir(dy > 0 ? { x: 0, y: 1 } : { x: 0, y: -1 });
+    }
+    e.preventDefault();
+  }, { passive: false });
+
   // Initial draw + prompt
   draw();
-  statusEl.textContent = 'Press Space or an arrow key to start';
+  statusEl.textContent = isTouch ? 'Tap the canvas or press ● to start' : 'Press Space or an arrow key to start';
 </script>
